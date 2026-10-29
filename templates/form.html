@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+
+{% if filme %}
+    {% set titulo_pagina = "Editar filme" %}
+{% else %}
+    {% set titulo_pagina = "Cadastrar filme" %}
+{% endif %}
+
+{% block titulo %}{{ titulo_pagina }} | Catálogo de Filmes{% endblock %}
+
+{% block conteudo %}
+
+<section class="painel">
+    <h2>{{ titulo_pagina }}</h2>
+
+    <form
+        method="POST"
+        action="{% if filme %}{{ url_for('editar', id=filme['id']) }}{% else %}{{ url_for('adicionar') }}{% endif %}"
+    >
+        <label for="titulo">Título do filme:</label>
+        <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value="{{ filme['titulo'] if filme else '' }}"
+            placeholder="Ex.: Divertida Mente"
+            required
+        >
+
+        <label for="genero">Gênero:</label>
+        <input
+            type="text"
+            id="genero"
+            name="genero"
+            value="{{ filme['genero'] if filme else '' }}"
+            placeholder="Ex.: Animação"
+            required
+        >
+
+        <label for="ano">Ano de lançamento:</label>
+        <input
+            type="number"
+            id="ano"
+            name="ano"
+            min="1888"
+            max="2100"
+            value="{{ filme['ano'] if filme else '' }}"
+            placeholder="Ex.: 2024"
+            required
+        >
+
+        <label for="nota">Nota (de 1 a 10):</label>
+        <input
+            type="number"
+            id="nota"
+            name="nota"
+            min="1"
+            max="10"
+            step="0.1"
+            value="{{ filme['nota'] if filme else '' }}"
+            placeholder="Ex.: 9.5"
+            required
+        >
+
+        <button class="botao" type="submit">
+            {% if filme %}Salvar alterações{% else %}Cadastrar filme{% endif %}
+        </button>
+
+        <a class="botao secundario" href="{{ url_for('index') }}">
+            Cancelar
+        </a>
+    </form>
+</section>
+
+{% endblock %}

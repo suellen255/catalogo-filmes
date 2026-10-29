@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block titulo %}Início | Catálogo de Filmes{% endblock %}
+
+{% block conteudo %}
+
+<section class="painel">
+    <h2>Meus filmes</h2>
+
+    <p>Veja todos os filmes cadastrados no catálogo.</p>
+
+    <a class="botao" href="{{ url_for('adicionar') }}">
+        + Cadastrar filme
+    </a>
+
+    {% if filmes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Gênero</th>
+                    <th>Ano</th>
+                    <th>Nota</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for filme in filmes %}
+                    <tr>
+                        <td>{{ filme['titulo'] }}</td>
+                        <td>{{ filme['genero'] }}</td>
+                        <td>{{ filme['ano'] }}</td>
+                        <td>{{ filme['nota'] }}/10</td>
+
+                        <td>
+                            <div class="acoes">
+                                <a
+                                    class="botao"
+                                    href="{{ url_for('editar', id=filme['id']) }}"
+                                >
+                                    Editar
+                                </a>
+
+                                <form
+                                    action="{{ url_for('excluir', id=filme['id']) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Deseja excluir este filme?');"
+                                >
+                                    <button class="botao perigo" type="submit">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>Ainda não há filmes cadastrados.</p>
+        <p>Comece adicionando seu primeiro filme!</p>
+    {% endif %}
+</section>
+
+{% endblock %}
